@@ -1,0 +1,106 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: anton
+      changes:
+        - createTable:
+            tableName: chief
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surname
+                  type: varchar(50)
+              - column:
+                  name: patronymic
+                  type: varchar(50)
+              - column:
+                  name: birthdate
+                  type: date
+        - createTable:
+            tableName: organization
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: fullname
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: shortname
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: inn
+                  type: varchar(50)
+              - column:
+                  name: ogrn
+                  type: varchar(50)
+              - column:
+                  name: postal_address
+                  type: varchar(50)
+              - column:
+                  name: legal_address
+                  type: varchar(50)
+              - column:
+                  name: general_id
+                  type: integer
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_organization_chief
+                    references: chief(id)
+        - createTable:
+            tableName: branch_office
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: postal_address
+                  type: varchar(50)
+              - column:
+                  name: director_id
+                  type: integer
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_branch_office_chief
+                    references: chief(id)
+              - column:
+                  name: organization_id
+                  type: integer
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_branch_office_organization
+                    references: organization(id)
+  - changeSet:
+      id: 2
+      author: anton
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: db/changelog/data.sql
